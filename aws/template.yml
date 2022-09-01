@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
+Description: NNS Metadata
+
+Globals:
+  Function:
+    Timeout: 10
+    Runtime: go1.x
+
+Resources:
+  Api:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: $default
+
+  ApiMapping:
+    Type: AWS::ApiGatewayV2::ApiMapping
+    Properties:
+      ApiId: !Ref Api
+      DomainName: metadata.nns.xyz
+      Stage: !Ref ApiApiGatewayDefaultStage
+
+  ApiHandlerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub "${AWS::StackName}-api"
+      Handler: bin/api
+      Timeout: 10
+      Events:
+        HttpEvents:
+          Type: HttpApi
+          Properties:
+            Path: /{any+}
+            Method: ANY
+            ApiId: !Ref Api
