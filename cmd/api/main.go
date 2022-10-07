@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 
+	nnsmetadata "github.com/apbigcod/nns-metadata"
 	"github.com/apbigcod/nns-metadata/metadata"
 	"github.com/apbigcod/nns-metadata/thegraph"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -11,7 +12,12 @@ import (
 )
 
 func main() {
-	tgc := thegraph.Client{GraphName: "apbigcod/nns"}
+	tgc := thegraph.Client{
+		GraphNames: map[nnsmetadata.Network]string{
+			nnsmetadata.Goerli:  "apbigcod/nns-goerli",
+			nnsmetadata.Mainnet: "apbigcod/nns",
+		},
+	}
 	h := metadata.Handler{
 		GraphClient: tgc,
 		WebURL:      "https://nns.xyz",

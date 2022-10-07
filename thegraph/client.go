@@ -7,11 +7,13 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
+	nnsmetadata "github.com/apbigcod/nns-metadata"
 )
 
 // Client integrates with thegraph.com api.
 type Client struct {
-	GraphName string
+	GraphNames map[nnsmetadata.Network]string
 }
 
 // Domain holds information about a domain.
@@ -21,7 +23,12 @@ type Domain struct {
 }
 
 // DomainName returns the domain name from a label hash.
-func (c Client) Domain(labelHash string) (Domain, bool, error) {
+func (c Client) Domain(network nnsmetadata.Network, labelHash string) (Domain, bool, error) {
+	gn, ok := c.GraphNames[network]
+	if !ok {
+		return Domain{}, false, fmt.Errorf("invalid network %q", network)
+	}
+
 	body := map[string]interface{}{
 		"query": fmt.Sprintf(`{
 			domains(first:1, where:{labelhash:%q}){
@@ -31,12 +38,11 @@ func (c Client) Domain(labelHash string) (Domain, bool, error) {
 		}
 		`, labelHash),
 	}
-
 	b, err := json.Marshal(body)
 	if err != nil {
 		return Domain{}, false, fmt.Errorf("error marshalling body: %v", err)
 	}
-	url := fmt.Sprintf("https://api.thegraph.com/subgraphs/name/%s", c.GraphName)
+	url := fmt.Sprintf("https://api.thegraph.com/subgraphs/name/%s", gn)
 	req, err := http.NewRequest(http.MethodPost, url, bytes.NewReader(b))
 	if err != nil {
 		return Domain{}, false, fmt.Errorf("error creating request: %v", err)
