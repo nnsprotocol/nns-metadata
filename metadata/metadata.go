@@ -99,12 +99,15 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	d, found, err := h.GraphClient.Domain(net, thex)
 	if err != nil {
 		log.WithError(err).
+			WithField("token", token).
 			Error("error getting domain")
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	if !found {
-		log.Error("domain not found")
+		log.WithField("token", token).
+			WithField("hex", thex).
+			Error("domain not found")
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
