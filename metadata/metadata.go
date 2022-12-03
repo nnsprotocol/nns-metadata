@@ -134,7 +134,7 @@ func (h Handler) respond(w http.ResponseWriter, parts []string, d thegraph.Domai
 
 	imgURL := fmt.Sprintf("%s/%s/%s/%s/image", h.APIURL, network, contract, token)
 	md := Metadata{
-		Name:        fmt.Sprintf("%s.⌐◨-◨", d.Name),
+		Name:        d.Name,
 		Description: fmt.Sprintf("%s.⌐◨-◨ an NNS name", d.Name),
 		Attributes: []Attribute{
 			{TraitType: "Length", DisplayType: "number", Value: len(d.Name)},
@@ -161,5 +161,5 @@ func formatHashToHex(v string) (string, bool) {
 	if !ok {
 		return "", false
 	}
-	return "0x" + n.Text(16), true
+	return fmt.Sprintf("0x%064x", n), true
 }
