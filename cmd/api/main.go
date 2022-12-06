@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"os"
 
-	nnsmetadata "github.com/apbigcod/nns-metadata"
-	"github.com/apbigcod/nns-metadata/metadata"
-	"github.com/apbigcod/nns-metadata/thegraph"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/awslabs/aws-lambda-go-api-proxy/httpadapter"
+	nnsmetadata "github.com/nnsprotocol/nns-metadata"
+	"github.com/nnsprotocol/nns-metadata/metadata"
+	"github.com/nnsprotocol/nns-metadata/thegraph"
 )
 
 func main() {

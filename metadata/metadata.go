@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"strings"
 
-	nnsmetadata "github.com/apbigcod/nns-metadata"
-	"github.com/apbigcod/nns-metadata/logger"
-	"github.com/apbigcod/nns-metadata/thegraph"
+	nnsmetadata "github.com/nnsprotocol/nns-metadata"
+	"github.com/nnsprotocol/nns-metadata/logger"
+	"github.com/nnsprotocol/nns-metadata/thegraph"
 )
 
 type Attribute struct {

@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"time"
 
-	nnsmetadata "github.com/apbigcod/nns-metadata"
+	nnsmetadata "github.com/nnsprotocol/nns-metadata"
 )
 
 // Client integrates with thegraph.com api.
